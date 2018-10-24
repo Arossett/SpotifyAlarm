@@ -99,8 +99,7 @@ public class MainActivity extends AppCompatActivity {
                         public void onConnected(SpotifyAppRemote spotifyAppRemote) {
                             mSpotifyAppRemote = spotifyAppRemote;
                             Log.d(debug, "Connected! Yay!");
-
-                            //connected();
+                            connected();
                         }
 
                         @Override
@@ -111,6 +110,7 @@ public class MainActivity extends AppCompatActivity {
                         }
                     });
         }
+
         super.onStart();
     }
 
@@ -118,15 +118,6 @@ public class MainActivity extends AppCompatActivity {
     //Action done when Spotify app is connected
     private void connected(){
         if(mSpotifyAppRemote!=null) {
-            mSpotifyAppRemote.getUserApi().subscribeToUserStatus().setEventCallback(new Subscription.EventCallback<UserStatus>() {
-                @Override
-                public void onEvent(UserStatus userStatus) {
-                    if(userStatus!=null) {
-                        Log.d(debug, "user Status " + userStatus.code);
-
-                    }
-                }
-            });
 
             //Play playlist
             mSpotifyAppRemote.getPlayerApi().play("spotify:user:spotify:playlist:37i9dQZF1DWVFJtzvDHN4L");
@@ -143,13 +134,18 @@ public class MainActivity extends AppCompatActivity {
                 }
             });
         }
-
     }
 
     @Override
     protected void onStop(){
         SpotifyAppRemote.CONNECTOR.disconnect(mSpotifyAppRemote);
         super.onStop();
+    }
+
+    @Override
+    protected void onPause(){
+        Log.d(debug, "dafuk");
+        super.onPause();
     }
 
     @Override
